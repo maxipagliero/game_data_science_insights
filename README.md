@@ -49,7 +49,7 @@ The projects here are designed to mirror real-world responsibilities from commer
 ```text
 .
 ├─ README.md                               # This file – portfolio overview
-├─ project1-game-economy-analytics/        # In-Game Economy & Monetization Analytics
-├─ project3-anti-cheat-detection/          # Anti-Cheat Behavior Detection (ML + Analytics)
-├─ project4-data-pipeline-platform/        # End-to-End Data Pipeline Platform
-└─ project6-anti-cheat-investigator-tool/  # Internal Anti-Cheat Investigator Tool
+├─ project1_game_economy_analytics/        # In-Game Economy & Monetization Analytics
+├─ project3_anti_cheat_detection/          # Anti-Cheat Behavior Detection (ML + Analytics)
+├─ project4_data_pipeline_platform/        # End-to-End Data Pipeline Platform
+└─ project6_anti_cheat_investigator_tool/  # Internal Anti-Cheat Investigator Tool
