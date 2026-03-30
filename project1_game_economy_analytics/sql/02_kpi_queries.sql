@@ -1,10 +1,11 @@
 /* Daily DAU */
 
+CREATE OR REPLACE VIEW curated.daily_dau AS
 WITH daily_sessions AS (
   SELECT
     DATE(session_start_ts) AS activity_date,
     user_id
-  FROM sessions
+  FROM raw.sessions
   GROUP BY 1, 2
 )
 SELECT
@@ -16,12 +17,13 @@ ORDER BY activity_date;
 
 /* Daily Revenue + Payers */
 
+CREATE OR REPLACE VIEW curated.daily_revenue AS
 WITH daily_revenue AS (
   SELECT
     DATE(event_ts) AS revenue_date,
     user_id,
     SUM(revenue_usd) AS user_revenue
-  FROM economy_events
+  FROM raw.economy_events
   WHERE event_type = 'iap_purchase'
   GROUP BY 1, 2
 )
@@ -35,11 +37,12 @@ ORDER BY revenue_date;
 
 /* Daily ARPU / ARPPU (join DAU + revenue) */
 
+CREATE OR REPLACE VIEW curated.daily_arpu_arppu AS
 WITH daily_dau AS (
   SELECT
     DATE(session_start_ts) AS activity_date,
     COUNT(DISTINCT user_id) AS dau
-  FROM sessions
+  FROM raw.sessions
   GROUP BY 1
 ),
 daily_rev AS (
@@ -47,7 +50,7 @@ daily_rev AS (
     DATE(event_ts) AS activity_date,
     SUM(revenue_usd) AS total_revenue,
     COUNT(DISTINCT user_id) AS payers
-  FROM economy_events
+  FROM raw.economy_events
   WHERE event_type = 'iap_purchase'
   GROUP BY 1
 )
@@ -69,18 +72,19 @@ ORDER BY d.activity_date;
 
 /* Retention Cohorts (D1, D7, D30) */
 
+CREATE OR REPLACE VIEW curated.retention_cohorts AS
 WITH installs AS (
   SELECT
     user_id,
     install_date
-  FROM users
+  FROM raw.users
 ),
 
 activity AS (
   SELECT DISTINCT
     s.user_id,
     DATE(s.session_start_ts) AS activity_date
-  FROM sessions s
+  FROM raw.sessions s
 ),
 
 retention AS (
@@ -112,21 +116,22 @@ ORDER BY cohort_date;
 
 /* Simple Conversion Funnel */
 
+CREATE OR REPLACE VIEW curated.funnel AS
 WITH base_users AS (
-  SELECT user_id FROM users
+  SELECT user_id FROM raw.users
 ),
 step_sessions AS (
   SELECT DISTINCT user_id
-  FROM sessions
+  FROM raw.sessions
 ),
 step_spend_soft AS (
   SELECT DISTINCT user_id
-  FROM economy_events
+  FROM raw.economy_events
   WHERE event_type = 'spend_soft'
 ),
 step_payers AS (
   SELECT DISTINCT user_id
-  FROM economy_events
+  FROM raw.economy_events
   WHERE event_type = 'iap_purchase'
 )
 SELECT

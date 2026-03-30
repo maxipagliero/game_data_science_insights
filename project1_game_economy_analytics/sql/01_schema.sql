@@ -1,4 +1,11 @@
-CREATE TABLE users (
+-- Schemas
+-- raw: stores data as-is from source systems
+-- curated: stores business-ready, cleaned, and enriched data
+CREATE SCHEMA IF NOT EXISTS raw;
+CREATE SCHEMA IF NOT EXISTS curated;
+
+-- Raw tables
+CREATE TABLE raw.users (
   user_id TEXT PRIMARY KEY,
   install_date DATE,
   country TEXT,
@@ -7,15 +14,15 @@ CREATE TABLE users (
   device_type TEXT
 );
 
-CREATE TABLE sessions (
+CREATE TABLE raw.sessions (
   session_id TEXT PRIMARY KEY,
-  user_id TEXT REFERENCES users(user_id),
+  user_id TEXT REFERENCES raw.users(user_id),
   session_start_ts TIMESTAMP,
   session_end_ts TIMESTAMP,
   session_number INT
 );
 
-CREATE TABLE items (
+CREATE TABLE raw.items (
   item_id TEXT PRIMARY KEY,
   item_name TEXT,
   item_type TEXT,
@@ -24,13 +31,13 @@ CREATE TABLE items (
   is_iap BOOLEAN
 );
 
-CREATE TABLE economy_events (
+CREATE TABLE raw.economy_events (
   event_id TEXT PRIMARY KEY,
-  user_id TEXT REFERENCES users(user_id),
-  session_id TEXT REFERENCES sessions(session_id),
+  user_id TEXT REFERENCES raw.users(user_id),
+  session_id TEXT REFERENCES raw.sessions(session_id),
   event_ts TIMESTAMP,
   event_type TEXT,
-  item_id TEXT REFERENCES items(item_id),
+  item_id TEXT REFERENCES raw.items(item_id),
   soft_delta INT,
   hard_delta INT,
   revenue_usd REAL,
