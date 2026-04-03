@@ -1,6 +1,6 @@
 # Project 3 – Anti-Cheat Behavior Detection
 
-**Status: 🔨 In Progress (Step 1 complete)**
+**Status: ✅ Complete**
 
 ## Objective
 Detect cheating players in a competitive FPS game by analysing match-level
@@ -93,7 +93,7 @@ python src/prepare_data.py
 | Step | Description | Status |
 |---|---|---|
 | 1 | Data generation & PostgreSQL ingestion | ✅ Done |
-| 2 | EDA & rule-based detection | 🔜 |
-| 3 | Feature engineering | 🔜 |
-| 4 | ML classification (Logistic Regression, Random Forest, XGBoost) | 🔜 |
-| 5 | Evaluation & reporting | 🔜 |
+| 2 | EDA & rule-based detection | ✅ Done |
+| 3 | Feature engineering | ✅ Done |
+| 4 | ML classification (Logistic Regression, Random Forest, XGBoost) | ✅ Done |
+| 5 | Evaluation & reporting | ✅ Done |
